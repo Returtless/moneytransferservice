@@ -21,7 +21,10 @@ public class Card {
         this.number = checkCardNumber(number);
     }
 
-    private String checkCardNumber(String number) {
+    public Card() {
+    }
+
+    public String checkCardNumber(String number) {
         if (isEmpty(number)) {
             throw new InputDataError("Номер карты не заполнен.");
         }
