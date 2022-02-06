@@ -1,8 +1,18 @@
 package com.example.moneytransferservice.model;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class Confirmation {
     private Operation operationId;
     private String code;
+
+    @JsonCreator
+    public Confirmation(@JsonProperty("operationId") Operation operationId,
+                                      @JsonProperty("code") String code) {
+        this.operationId = operationId;
+        this.code = code;
+    }
 
     public Operation getOperationId() {
         return operationId;

@@ -1,12 +1,25 @@
 package com.example.moneytransferservice.model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Transfer {
     private Card cardFrom;
     private Card cardTo;
     private Amount amount;
     private Operation operationId;
+
+    @JsonCreator
+    public Transfer(@JsonProperty("cardFromNumber") String fromNumber,
+                    @JsonProperty("cardFromValidTill") String validTill,
+                    @JsonProperty("cardFromCVV") String cardCVV,
+                    @JsonProperty("cardToNumber") String toNumber,
+                    @JsonProperty("amount") Amount amount) {
+        this.cardFrom = new Card(fromNumber, validTill, cardCVV);
+        this.cardTo = new Card(toNumber);
+        this.amount = amount;
+        this.operationId = new Operation(Operation.generationСode());
+    }
 
     @JsonCreator
     public Card getCardFrom() {

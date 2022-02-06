@@ -11,10 +11,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.sql.Timestamp;
 
 @RestController
 @AllArgsConstructor
@@ -24,9 +23,11 @@ public class TransferController {
     TransferService transferService;
 
     @PostMapping("/transfer")
+    @CrossOrigin(origins = "*")
     public Operation save(@RequestBody Transfer transfer) {
         Transfer sendTransfer = transferService.saveTransfer(transfer);
-        String msg = String.format("CardFrom = %s, CardTo = %s, Amount = %s", transfer.getCardFrom(),
+        String msg = String.format("%s  Карта отправителя = %s, Карта получателя = %s, Информация о переводе = %s",
+                new Timestamp(System.currentTimeMillis()), transfer.getCardFrom(),
                 transfer.getCardTo(), transfer.getAmount());
         LOG.info(msg);
         return sendTransfer.getOperationId();
@@ -34,11 +35,15 @@ public class TransferController {
 
 
     @PostMapping("/confirmOperation")
+    @CrossOrigin(origins = "*")
     public Operation confirm(@RequestBody Confirmation confirmOperation) {
         String code = confirmOperation.getCode();
         if (code == null || code.isEmpty()) {
-            throw new TransferError("Verification code is empty.");
+            throw new TransferError("Код подтверждения не заполнен.");
         }
+        String msg = String.format("%s  Подтверждение операции %s с кодом %s",
+                new Timestamp(System.currentTimeMillis()), confirmOperation.getOperationId(), confirmOperation.getCode());
+        LOG.info(msg);
         return transferService.confirmTransfer(confirmOperation.getOperationId());
     }
 
