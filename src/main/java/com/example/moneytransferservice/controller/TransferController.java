@@ -7,8 +7,8 @@ import com.example.moneytransferservice.model.Operation;
 import com.example.moneytransferservice.model.Transfer;
 import com.example.moneytransferservice.service.TransferService;
 import lombok.AllArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +18,7 @@ import java.sql.Timestamp;
 @RestController
 @AllArgsConstructor
 public class TransferController {
-    private static final Logger LOG = LoggerFactory.getLogger("transferController");
+    private static final Logger LOG = LogManager.getLogger(TransferController.class);
 
     TransferService transferService;
 
